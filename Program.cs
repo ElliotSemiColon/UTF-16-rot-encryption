@@ -39,9 +39,9 @@ namespace file_reading_test
         }
 
 
-        static void WriteFile(string input)
+        static void WriteFile(string input, string path)
         {
-            StreamWriter newFile = new StreamWriter(@"C:\Users\ellio\Documents\programming\program-data\output.txt");
+            StreamWriter newFile = new StreamWriter(@path);
             newFile.Write(input);
             newFile.Close();
         }
@@ -78,7 +78,7 @@ namespace file_reading_test
             try
             {
                 //pass the file path and file name to the StreamReader constructor
-                Console.WriteLine("enter the file path of the file you'd like to encrypt");
+                Console.WriteLine("this progam will overwrite the file you select with the encrypted text file\nto decrypt the file, just enter the negative of the initial rot (remember it - else you'll have to use trial and error!)\nenter the file path of the file you'd like to encrypt");
                 string path = Console.ReadLine();
                 StreamReader sr = new StreamReader(@path); //@path seems to have parsed the input as a system.io.path value
                 inStream = ReadFile(sr); //generate input stream of raw data from filepath (with newlines)
@@ -89,14 +89,14 @@ namespace file_reading_test
                 //encrypt
                 charVal = MakeCharVals(inStream); //turns the input stream into a list of decimals converted from it's chars
                 outStream = Encrypt(charVal, rot);
-                WriteFile(outStream);
+                WriteFile(outStream, path);
 
                 Console.WriteLine("input:{0}\noutput(rot {1}):{2}", inStream, rot, outStream);
 
                 //decrypt 
-                inStream = outStream;
-                charVal = MakeCharVals(outStream);
-                outStream = Encrypt(charVal, -rot);
+                //inStream = outStream;
+                //charVal = MakeCharVals(outStream);
+                //outStream = Encrypt(charVal, -rot);
 
                 Console.WriteLine("input:{0}\noutput(rot -{1}):{2}", inStream, rot, outStream);
 
