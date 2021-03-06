@@ -73,7 +73,7 @@ namespace file_reading_test
         {
             string inStream;
             string outStream;
-            int rot = 31; 
+            int rot; 
             List<Int32> charVal = new List<Int32>();
             try
             {
@@ -82,21 +82,23 @@ namespace file_reading_test
                 string path = Console.ReadLine();
                 StreamReader sr = new StreamReader(@path); //@path seems to have parsed the input as a system.io.path value
                 inStream = ReadFile(sr); //generate input stream of raw data from filepath (with newlines)
-           
-   
+
+                Console.WriteLine("\nenter the rot value you'd like to encrypt with");
+                rot = Int16.Parse(Console.ReadLine());
+
                 //encrypt
                 charVal = MakeCharVals(inStream); //turns the input stream into a list of decimals converted from it's chars
                 outStream = Encrypt(charVal, rot);
                 WriteFile(outStream);
 
-                Console.WriteLine("input: "+ inStream + "\noutput: " + outStream);
+                Console.WriteLine("input:{0}\noutput(rot {1}):{2}", inStream, rot, outStream);
 
                 //decrypt 
                 inStream = outStream;
                 charVal = MakeCharVals(outStream);
                 outStream = Encrypt(charVal, -rot);
 
-                Console.WriteLine("input: " + inStream + "\noutput: " + outStream);
+                Console.WriteLine("input:{0}\noutput(rot -{1}):{2}", inStream, rot, outStream);
 
                 Console.ReadLine();
             }
