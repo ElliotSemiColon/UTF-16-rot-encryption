@@ -44,6 +44,7 @@ namespace file_reading_test
             StreamWriter newFile = new StreamWriter(@path);
             newFile.Write(input);
             newFile.Close();
+            Console.WriteLine("now encrypted at {0}", path);
         }
 
 
@@ -89,16 +90,18 @@ namespace file_reading_test
                 //encrypt
                 charVal = MakeCharVals(inStream); //turns the input stream into a list of decimals converted from it's chars
                 outStream = Encrypt(charVal, rot);
-                WriteFile(outStream, path);
+                
 
                 Console.WriteLine("input:{0}\noutput(rot {1}):{2}", inStream, rot, outStream);
+
+                WriteFile(outStream, path);
 
                 //decrypt 
                 //inStream = outStream;
                 //charVal = MakeCharVals(outStream);
                 //outStream = Encrypt(charVal, -rot);
 
-                Console.WriteLine("input:{0}\noutput(rot -{1}):{2}", inStream, rot, outStream);
+                //Console.WriteLine("input:{0}\noutput(rot -{1}):{2}", inStream, rot, outStream);
 
                 Console.ReadLine();
             }
