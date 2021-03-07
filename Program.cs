@@ -12,6 +12,7 @@ namespace file_reading_test
 
         static string Encrypt(List<int> charVal, int rot) //type returned specified in keyword after static
         {
+            Console.WriteLine("encrypting...");
             string outStream = "";
             for (var i = 0; i < charVal.Count; i++)
             {
@@ -25,11 +26,12 @@ namespace file_reading_test
 
         static List<int> MakeCharVals(string inStream)
         {
+            Console.WriteLine("populating list...");
             string pattern = @"\r|\n|."; //carriage return OR newline OR any character
             List<int> charVal = new List<int>();
             Regex rgx = new Regex(pattern);
             Match match = rgx.Match(inStream); //finds first match
-
+         
             while (match.Success) //generates a list of all characters in the input stream
             {
                 charVal.Add(Char.Parse(match.Value)); //match gets implicity converted to an int and stored in the list 
@@ -79,7 +81,7 @@ namespace file_reading_test
             try
             {
                 //pass the file path and file name to the StreamReader constructor
-                Console.WriteLine("this progam will overwrite the file you select with the encrypted text file\nto decrypt the file, just enter the negative of the initial rot (remember it - else you'll have to use trial and error!)\nenter the file path of the file you'd like to encrypt");
+                Console.WriteLine("this progam will overwrite the file you select with the encrypted text file\nto decrypt the file, just enter the negative of the initial rot (remember it - else you'll have to use trial and error!)\nenter the file path of the file you'd like to encrypt or drag and drop file into this window");
                 string path = Console.ReadLine();
                 StreamReader sr = new StreamReader(@path); //@path seems to have parsed the input as a system.io.path value
                 inStream = ReadFile(sr); //generate input stream of raw data from filepath (with newlines)
@@ -88,13 +90,21 @@ namespace file_reading_test
                 rot = Int16.Parse(Console.ReadLine());
 
                 //encrypt
-                charVal = MakeCharVals(inStream); //turns the input stream into a list of decimals converted from it's chars
+                charVal = MakeCharVals(inStream); //turns the input stream into a list of decimals converted from it's char 
                 outStream = Encrypt(charVal, rot);
-                
 
                 Console.WriteLine("input:{0}\noutput(rot {1}):{2}", inStream, rot, outStream);
 
-                WriteFile(outStream, path);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("overwrite file with encrypted version? (Y/N)");
+                Console.ResetColor();
+                string response = Console.ReadLine();
+                Console.Clear();
+
+                if (response.ToLower() == "y") { WriteFile(outStream, path); } else { Console.WriteLine("no file overwritten"); }
+                
+
+                //WriteFile(outStream, path);
 
                 //decrypt 
                 //inStream = outStream;
@@ -108,10 +118,11 @@ namespace file_reading_test
             catch (Exception e)
             {
                 Console.WriteLine("\nerror: " + e.Message);
+                Console.ReadLine();
             }
             finally
             {
-                Console.WriteLine("finshed reading");
+                Console.WriteLine("exiting...");
             }
         }
     }
